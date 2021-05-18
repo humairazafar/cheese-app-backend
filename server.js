@@ -36,16 +36,6 @@ mongoose.connection
 .on("close", () => console.log("You are disconnected from mongoose"))
 .on("error", (error)=> console.log(error));
 
-///////////////////////////////////
-//MODELS///////////
-//////////////////////////////////
-const CheeseSchema = new mongoose.Schema({
-    name: String,
-    countryOfOrigin: String,
-    image: String,
-});
-
-const Cheese = mongoose.model("Cheese", CheeseSchema);
 
 //////////////////////////////////////
 //Mounting Middleware/////
@@ -88,9 +78,7 @@ app.post("/cheese", async (req, res) => {
 app.put("/cheese/:id", async(req, res) => {
     try {
         //send update info
-        res.json(
-         await Cheese.findByIdAndUpdate(req.params.id, req.body, {new: true})
-         );
+        res.json( await Cheese.findByIdAndUpdate(req.params.id, req.body, {new: true})); 
         
     } catch (error) {
         //send error
@@ -102,13 +90,24 @@ app.put("/cheese/:id", async(req, res) => {
 app.delete("/cheese/:id", async (req, res) => {
     try {
         //send all cheese
-        res.jason(await Cheese.findByIdAndRemove(req.params.id));
+        res.json(await Cheese.findByIdAndRemove(req.params.id));
 
     } catch (error) {
         //send error
         res.status(400).json(error);
     }
 });
+
+///////////////////////////////////
+//MODELS///////////
+//////////////////////////////////
+const CheeseSchema = new mongoose.Schema({
+    name: String,
+    countryOfOrigin: String,
+    image: String,
+});
+
+const Cheese = mongoose.model("Cheese", CheeseSchema);
 
 /////////////////////////////////////
 //LISTENER////////////////////
